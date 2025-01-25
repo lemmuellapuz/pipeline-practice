@@ -3,18 +3,31 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Filters\ByEmail;
+use App\Http\Filters\ByName;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Pipeline;
 
 class UserController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        
+        $pipes = [
+            new ByEmail($request->email),
+            new ByName($request->name),
+        ];
+
+        $users = Pipeline::send(User::query())
+        ->through($pipes)
+        ->thenReturn()
+        ->paginate();
+
+        return UserResource::collection($users);
     }
 
     public function store(StoreUserRequest $request)
