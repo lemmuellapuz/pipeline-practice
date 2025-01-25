@@ -20,8 +20,8 @@ class UpdateUserRequest extends FormRequest
             
             'email' => [
                 'required',
-                Rule::unique('users')->ignore($this->user()->id, 'id'),
-                Rule::email()->strict()->preventSpoofing(),
+                Rule::unique('users')->ignore(request()->user->id, 'id'),
+                Rule::email()->strict(),
             ],
 
             'name' => [

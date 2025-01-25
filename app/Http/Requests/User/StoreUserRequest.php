@@ -20,8 +20,8 @@ class StoreUserRequest extends FormRequest
             
             'email' => [
                 'required',
-                'unique',
-                Rule::email()->strict()->preventSpoofing(),
+                Rule::unique('users'),
+                Rule::email()->strict(),
             ],
 
             'name' => [
@@ -30,14 +30,14 @@ class StoreUserRequest extends FormRequest
             ],
 
             'password' => [
+                'required',
+                'confirmed',
                 Password::min(6)
-                ->max(32)
-                ->mixedCase()
-                ->numbers()
-                ->symbols()
-                ->uncompromised()
-                ->required(),
-                'confirmed'
+                    ->max(32)
+                    ->mixedCase()
+                    ->numbers()
+                    ->symbols()
+                    ->uncompromised(),
             ],
         ];
     }
