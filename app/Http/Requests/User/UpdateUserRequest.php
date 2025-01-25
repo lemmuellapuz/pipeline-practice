@@ -28,17 +28,6 @@ class UpdateUserRequest extends FormRequest
                 'required',
                 'max:255',
             ],
-
-            'password' => [
-                Password::min(6)
-                ->max(32)
-                ->mixedCase()
-                ->numbers()
-                ->symbols()
-                ->uncompromised()
-                ->required(),
-                'confirmed'
-            ],
         ];
     }
 }
